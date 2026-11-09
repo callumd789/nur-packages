@@ -17,6 +17,8 @@ in
 {
   inherit tmux-agent-sidebar;
 
+  rustconn = pkgs.callPackage ./pkgs/rustconn/package.nix { };
+
   tmux-agent-sidebar-plugin = pkgs.callPackage ./pkgs/tmux-agent-sidebar-plugin/package.nix {
     inherit (pkgs.tmuxPlugins) mkTmuxPlugin;
     inherit tmux-agent-sidebar;

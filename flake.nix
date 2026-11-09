@@ -26,7 +26,7 @@
           nurPkgs = self.packages.${prev.stdenv.hostPlatform.system};
         in
         {
-          inherit (nurPkgs) tmux-agent-sidebar;
+          inherit (nurPkgs) rustconn tmux-agent-sidebar;
 
           tmuxPlugins = prev.tmuxPlugins // {
             tmux-agent-sidebar = nurPkgs.tmux-agent-sidebar-plugin;
