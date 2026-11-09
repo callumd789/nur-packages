@@ -12,6 +12,7 @@
   openssl,
   vte-gtk4,
   webkitgtk_6_0,
+  zstd,
   nix-update-script,
 }:
 
@@ -60,7 +61,19 @@ rustPlatform.buildRustPackage (finalAttrs: {
     openssl
     vte-gtk4
     webkitgtk_6_0
+    # Newer nixpkgs' cargoSetupHook makes zstd-sys link it rather than build
+    # its own copy.
+    zstd
   ];
+
+  # Keeps aws-lc-sys building its own AWS-LC, as upstream's packages and older
+  # nixpkgs do. Newer nixpkgs' cargoSetupHook sets AWS_LC_SYS_USE_SYSTEM=1 to
+  # link nixpkgs' aws-lc instead, but in older nixpkgs (nixos-26.05 included)
+  # that exports the same unprefixed symbols as OpenSSL's libcrypto, which this
+  # links too. The hook runs in preConfigure, so this has to come later.
+  preBuild = ''
+    export AWS_LC_SYS_USE_SYSTEM=0
+  '';
 
   # Two cargo invocations, as in upstream's own packages: the CLI needs its
   # `full` feature for the connect, secret and SFTP commands, and building it
