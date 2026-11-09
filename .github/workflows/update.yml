@@ -15,6 +15,7 @@ jobs:
         # Packages that own their version and src. tmux-agent-sidebar-plugin
         # inherits both from tmux-agent-sidebar, so it follows that update.
         package:
+          - rustconn
           - tmux-agent-sidebar
     runs-on: ubuntu-latest
     steps:

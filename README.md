@@ -16,8 +16,32 @@ can be upstreamed by copying its `package.nix`.
 
 | Flake package | Overlay attribute | What it is |
 | --- | --- | --- |
+| `rustconn` | `pkgs.rustconn` | [RustConn](https://github.com/totoshko88/RustConn), a GTK4 connection manager for SSH, RDP, VNC, SPICE and more, with its `rustconn-cli` |
 | `tmux-agent-sidebar` | `pkgs.tmux-agent-sidebar` | The [tmux-agent-sidebar](https://github.com/hiroppy/tmux-agent-sidebar) binary |
 | `tmux-agent-sidebar-plugin` | `pkgs.tmuxPlugins.tmux-agent-sidebar` | Its tmux plugin, with `bin/tmux-agent-sidebar` linked to the binary above |
+
+### rustconn
+
+Only the RDP and VNC clients are built in. Every other protocol runs an
+external client from `PATH`, SSH and Telnet included (in the built-in
+terminal). None of them are wrapped in, so install whichever you need
+alongside it:
+
+- `openssh`, for SSH, SFTP and SSH keys
+- `inetutils`, for Telnet
+- `freerdp` and `tigervnc`, as fallbacks for the built-in RDP and VNC clients
+- `virt-viewer`, for SPICE
+- `mosh`, `kubectl`, `picocom` (serial), `waypipe`, `mc` (SFTP)
+- the password manager and zero trust CLIs you use (`bw`, `op`,
+  `keepassxc-cli`, `pass`, `aws`, `gcloud`, `az`, `cloudflared`, ...)
+
+The GUI is built with the `adw-1-8`, `gtk-4-22` and `vte-0-84` features on top
+of its defaults, as upstream's Flatpak and distribution packages are.
+
+H.264 in the built-in RDP client needs Cisco's own OpenH264 binary: the loader
+rejects any other build, nixpkgs' `openh264` included. RustConn can download it
+on request, or point `RUSTCONN_OPENH264` at one. Without it, sessions use
+RemoteFX.
 
 ### tmux-agent-sidebar
 

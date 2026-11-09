@@ -14,7 +14,7 @@ let
   nurPkgs = import ./default.nix { pkgs = final; };
 in
 {
-  inherit (nurPkgs) tmux-agent-sidebar;
+  inherit (nurPkgs) rustconn tmux-agent-sidebar;
 
   tmuxPlugins = prev.tmuxPlugins // {
     tmux-agent-sidebar = nurPkgs.tmux-agent-sidebar-plugin;
